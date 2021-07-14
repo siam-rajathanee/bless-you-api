@@ -15,7 +15,18 @@ class Donation extends Model
         'donate',
         'amount',
         'proof_of_transfer',
+        'status',
     ];
+
+    public function getFullnameAttribute()
+    {
+        return implode(' ', [$this->firstname, $this->lastname]);
+    }
+
+    public function getProofOfTransferAttribute()
+    {
+        return asset(\Storage::url($this->attributes['proof_of_transfer']));
+    }
 
     public function organization()
     {
@@ -25,5 +36,10 @@ class Donation extends Model
     public function address()
     {
         return $this->hasOne(DonationAddress::class);
+    }
+
+    public function blessingCard()
+    {
+        return $this->hasOne(BlessingCard::class);
     }
 }

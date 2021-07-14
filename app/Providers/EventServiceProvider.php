@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use App\Events\DonationApproved;
+use App\Events\DonationRejected;
+use App\Listeners\CreateBlessingCard;
+use App\Listeners\DeleteBlessingCard;
+use App\Models\Donation;
+use App\Observers\DonationObserver;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 
@@ -15,8 +19,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        Registered::class => [
-            SendEmailVerificationNotification::class,
+        DonationApproved::class => [
+            CreateBlessingCard::class,
+        ],
+        DonationRejected::class => [
+            DeleteBlessingCard::class,
         ],
     ];
 
@@ -27,6 +34,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Donation::observe(DonationObserver::class);
     }
 }
