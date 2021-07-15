@@ -14,6 +14,7 @@ class DonationController extends Controller
     public function index(Request $request, Response $response)
     {
         $organization = $request->get('organization');
+        $name = $request->input('name');
         $status = $request->input('status');
 
         return Donation::where('organization_id', $organization->id)
@@ -30,6 +31,7 @@ class DonationController extends Controller
                         break;
                 }
             })
+            ->whereRaw('CONCAT_WS(?, firstname, lastname) like ?', [' ', sprintf('%%%s%%', trim($name ?? ''))])
             ->orderBy('created_at')
             ->paginate();
     }
