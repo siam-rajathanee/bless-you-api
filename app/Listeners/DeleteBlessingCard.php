@@ -25,7 +25,7 @@ class DeleteBlessingCard
      */
     public function handle(DonationRejected $event)
     {
-        $blessing_card = $event->getDonation()?->blessingCard;
+        $blessing_card = $event->getDonation() ? $event->getDonation()->blessingCard : null;
 
         if ($blessing_card) {
             Storage::disk('public')->delete($blessing_card->card);

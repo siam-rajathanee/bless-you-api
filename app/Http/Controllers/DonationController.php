@@ -111,8 +111,8 @@ class DonationController extends Controller
             ]);
 
             $address->save();
-        } else if (!is_null($request->input('address_allow')) && !$request->input('address_allow')) {
-            $donation->address?->delete();
+        } else if (!is_null($request->input('address_allow')) && !$request->input('address_allow') && $donation->address) {
+            $donation->address->delete();
         }
 
         return response($donation);
