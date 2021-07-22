@@ -11,6 +11,11 @@ class BlessingCard extends Model
 
     protected $fillable = ['card'];
 
+    public function getCardAttribute()
+    {
+        return asset(\Storage::url($this->attributes['card']));
+    }
+
     public function donation()
     {
         return $this->belongsTo(Donation::class);

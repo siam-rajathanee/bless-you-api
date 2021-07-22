@@ -43,7 +43,7 @@ class DonationController extends Controller
         return Donation::where('id', $id)
             ->where('organization_id', $organization->id)
             ->firstOrFail()
-            ->load('address');
+            ->load(['address', 'blessingCard']);
     }
 
     public function store(DonationPostRequest $request, Response $response)

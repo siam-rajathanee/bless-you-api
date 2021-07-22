@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Middleware\Organization;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,7 @@ Route::group(
         'middleware' => [Organization::class],
     ],
     function () {
+        Route::get('', [OrganizationController::class, 'index']);
         Route::post('/donations', [DonationController::class, 'store']);
 
         Route::group([
@@ -35,9 +37,11 @@ Route::group(
         });
 
         Route::group([
-            // 'middleware' => 'auth:api',
+            'middleware' => 'auth:api',
         ], function () {
-            Route::resource('/donations', DonationController::class);
+            Route::resource('/donations', DonationController::class, ['except' => 'store']);
         });
+
+        Route::post('/donations', [DonationController::class, 'store']);
     }
 );
